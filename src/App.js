@@ -1,4 +1,7 @@
+import useAllDogs from "./hooks/useAllDogs";
+
 function App() {
+  const allDogs = useAllDogs()
 
   return (
     <>
@@ -20,8 +23,19 @@ function App() {
             <svg className="" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            <input className="w-full h-full" type="text" placeholder="Corgi"></input>
+            <input className="w-full h-full" type="text" placeholder="Chow"></input>
           </div>
+
+          <article id="search-results" className="border border-black p-4 rounded-lg w-full h-64 overflow-scroll">
+
+            <ul>
+              {allDogs &&
+                Object.keys(allDogs).map((dog, index) => {
+                  return <li key={index}>{dog.charAt(0).toUpperCase() + dog.slice(1)}</li>
+                })}
+            </ul>
+          </article>
+
 
 
           <article id="selected-items">
@@ -32,7 +46,7 @@ function App() {
         </section>
 
 
-        <section id="results">
+        <section id="gallery">
 
         </section>
 
