@@ -30,22 +30,28 @@ function App() {
 
             <input onChange={(e) => {
               e.target.value != '' ?
-                setFilteredBreeds(Object.keys(allDogs).filter((dog) => {
+                setFilteredBreeds(allDogs.filter((dog) => {
+                  console.log(dog)
                   return dog.includes(e.target.value.toLowerCase())
                 })) :
                 setFilteredBreeds([])
             }} className="w-full h-full" type="text" placeholder="Chow"></input>
           </div>
 
-          <article id="search-results" className="border border-black p-4 rounded-lg w-full h-64 overflow-scroll">
+          {filteredBreeds.length > 0 &&
 
-            <ul>
-              {filteredBreeds &&
-                filteredBreeds.map((dog, index) => {
-                  return <li key={index}>{dog.charAt(0).toUpperCase() + dog.slice(1)}</li>
-                })}
-            </ul>
-          </article>
+
+            <article id="search-results" className="border border-black p-4 rounded-lg w-full h-64 overflow-scroll">
+
+              <ul>
+                {
+                  filteredBreeds.map((dog, index) => {
+                    return <li key={index}>{dog.charAt(0).toUpperCase() + dog.slice(1)}</li>
+                  })}
+              </ul>
+            </article>
+
+          }
 
 
 
