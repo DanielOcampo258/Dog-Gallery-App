@@ -4,6 +4,7 @@ import useAllDogs from "./hooks/useAllDogs";
 function App() {
   const allDogs = useAllDogs()
   const [filteredBreeds, setFilteredBreeds] = useState([])
+  const [selectedBreeds, setSelectedBreeds] = useState([])
 
   useEffect(() => console.log(filteredBreeds), [filteredBreeds])
   return (
@@ -28,6 +29,7 @@ function App() {
               <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
 
+
             <input onChange={(e) => {
               e.target.value != '' ?
                 setFilteredBreeds(allDogs.filter((dog) => {
@@ -35,7 +37,7 @@ function App() {
                   return dog.includes(e.target.value.toLowerCase())
                 })) :
                 setFilteredBreeds([])
-            }} className="w-full h-full" type="text" placeholder="Chow"></input>
+            }} className="w-full h-full overflow-scroll" type="text" placeholder="Chow"></input>
           </div>
 
           {filteredBreeds.length > 0 &&
@@ -46,7 +48,11 @@ function App() {
               <ul>
                 {
                   filteredBreeds.map((dog, index) => {
-                    return <li key={index}>{dog.charAt(0).toUpperCase() + dog.slice(1)}</li>
+                    return <li key={index}><button onClick={() => {
+                      if (!selectedBreeds.includes(dog.charAt(0).toUpperCase() + dog.slice(1)))
+                        setSelectedBreeds([...selectedBreeds, dog.charAt(0).toUpperCase() + dog.slice(1)])
+
+                    }}>{dog.charAt(0).toUpperCase() + dog.slice(1)}</button></li>
                   })}
               </ul>
             </article>
@@ -54,13 +60,23 @@ function App() {
           }
 
 
+          {selectedBreeds.length > 0 &&
 
-          <article id="selected-items">
+            <article id="selected-items" >
+              <h5>Click submit to generate a gallery of these dogs!</h5>
+              <div className="border p-3 rounded-lg border-black">
+                <ul className="grid grid-cols-4 gap-5">
+                  {selectedBreeds.map((selectedDog, index) => {
+                    return <li key={index}>{selectedDog}</li>
+                  })}
+                </ul>
 
+              </div>
 
-          </article>
+            </article>
+          }
 
-          <button type="submit">Submit</button>
+          <button className="text-white bg-black px-3 py-4 rounded-lg" type="submit">Submit</button>
 
         </section>
 
