@@ -8,21 +8,32 @@ function App() {
   const [selectedBreeds, setSelectedBreeds] = useState([])
   const [gallery, setGallery] = useState([])
 
-  
+  useEffect(() => console.log(gallery), [gallery]);
+
+  useEffect(() => console.log(selectedBreeds), [selectedBreeds]);
+
+
+  const makeApiDogCall = async (dog) => {
+
+    try {
+      const response = await fetch(`https://dog.ceo/api/breed/${dog.toLowerCase()}/images/random`);
+      if (response.ok) {
+        const data = await response.json();
+        setGallery((prev) => {
+          return [...prev, { "name": dog, "imgUrl": data.message }]
+        })
+      }
+
+    } catch (err) {
+
+    }
+
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    selectedBreeds.forEach((selectedDog) => {
-
-      fetch(`https://dog.ceo/api/breed/${selectedDog.toLowerCase()}/images/random`)
-        .then((res) => res.json())
-        .then((data) => {
-
-          console.log(data.message)
-        
-          setGallery([...gallery, {"name":selectedDog, "imgUrl" : data.message}])
-        })
-    })
+    selectedBreeds.forEach((dog) => makeApiDogCall(dog));
 
 
   }
@@ -30,10 +41,10 @@ function App() {
   const deleteSelectedItem = (nameOfDog) => {
 
     setSelectedBreeds(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()))
-    setGallery(gallery.filter((galleryObject) => galleryObject.name.toLowerCase() !== nameOfDog.toLowerCase() ))
+    setGallery(gallery.filter((galleryObject) => galleryObject.name.toLowerCase() !== nameOfDog.toLowerCase()))
   }
 
- 
+
   return (
     <>
       <header className="flex w-full flex-col justify-center items-center py-16 gap-3">
@@ -103,17 +114,17 @@ function App() {
             </article>
           }
 
-          <button onClick={handleSubmit} className="text-white mx-auto block mt-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
+          <button onClick={handleSubmit} className="text-white mx-auto block my-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
 
         </section>
 
 
         {gallery.length > 0 &&
 
-          <section id="gallery" className="w-3/4 h-48 grid grid-cols-3">
+          <section id="gallery" className="mx-auto items-center justify-items-center w-3/4 h-auto grid gap-y-3 grid-cols-3">
             {gallery.map((galleryObject, index) => {
 
-              return <img key={index} src={galleryObject.imgUrl} alt="dog"></img>
+              return <img className="object-cover rounded-lg w-48 h-48" key={index} src={galleryObject.imgUrl} alt={galleryObject.name}></img>
 
             })}
 
