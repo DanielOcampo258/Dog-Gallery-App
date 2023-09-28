@@ -1,12 +1,39 @@
 import { useEffect, useState } from "react";
 import useAllDogs from "./hooks/useAllDogs";
+import SelectedDog from "./components/SelectedDog";
 
 function App() {
   const allDogs = useAllDogs()
   const [filteredBreeds, setFilteredBreeds] = useState([])
   const [selectedBreeds, setSelectedBreeds] = useState([])
+  const [gallery, setGallery] = useState([])
 
-  useEffect(() => console.log(filteredBreeds), [filteredBreeds])
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    selectedBreeds.forEach((selectedDog) => {
+
+      fetch(`https://dog.ceo/api/breed/${selectedDog.toLowerCase()}/images/random`)
+        .then((res) => res.json())
+        .then((data) => {
+
+          console.log(data.message)
+        
+          setGallery([...gallery, {"name":selectedDog, "imgUrl" : data.message}])
+        })
+    })
+
+
+  }
+
+  const deleteSelectedItem = (nameOfDog) => {
+
+    setSelectedBreeds(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()))
+    setGallery(gallery.filter((galleryObject) => galleryObject.name.toLowerCase() !== nameOfDog.toLowerCase() ))
+  }
+
+ 
   return (
     <>
       <header className="flex w-full flex-col justify-center items-center py-16 gap-3">
@@ -21,7 +48,7 @@ function App() {
 
         <section id="user-search" className="w-3/4 ">
 
-          <label className="block text-lg my-3">Search for the dog breed(s) you are looking for!</label>
+          <label htmlFor="search-bar" className="block text-lg my-3">Search for the dog breed(s) you are looking for!</label>
           <div className="flex items-center gap-3 border p-2 my-2 rounded-lg w-full border-black">
 
             {/* SVG graphic obtained from svgrepo.com */}
@@ -30,20 +57,20 @@ function App() {
             </svg>
 
 
-            <input onChange={(e) => {
-              e.target.value != '' ?
+            <input type="search" aria-autocomplete="list" id="search-bar" onChange={(e) => {
+              e.target.value !== '' ?
                 setFilteredBreeds(allDogs.filter((dog) => {
-                  console.log(dog)
+
                   return dog.includes(e.target.value.toLowerCase())
                 })) :
                 setFilteredBreeds([])
-            }} className="w-full h-full overflow-scroll" type="text" placeholder="Chow"></input>
+            }} className="w-full h-full overflow-scroll" placeholder="Chow"></input>
           </div>
 
           {filteredBreeds.length > 0 &&
 
 
-            <article id="search-results" className="border border-black p-4 rounded-lg w-full h-64 overflow-scroll">
+            <article role="listbox" aria-expanded="true" id="search-results" className="border border-black p-4 rounded-lg w-full h-64 overflow-scroll">
 
               <ul>
                 {
@@ -65,9 +92,9 @@ function App() {
             <article id="selected-items" >
               <h5>Click submit to generate a gallery of these dogs!</h5>
               <div className="border p-3 rounded-lg border-black">
-                <ul className="grid grid-cols-4 gap-5">
+                <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
                   {selectedBreeds.map((selectedDog, index) => {
-                    return <li key={index}>{selectedDog}</li>
+                    return <SelectedDog deleteSelectedItem={deleteSelectedItem} key={index} name={selectedDog} />
                   })}
                 </ul>
 
@@ -76,14 +103,23 @@ function App() {
             </article>
           }
 
-          <button className="text-white bg-black px-3 py-4 rounded-lg" type="submit">Submit</button>
+          <button onClick={handleSubmit} className="text-white mx-auto block mt-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
 
         </section>
 
 
-        <section id="gallery">
+        {gallery.length > 0 &&
 
-        </section>
+          <section id="gallery" className="w-3/4 h-48 grid grid-cols-3">
+            {gallery.map((galleryObject, index) => {
+
+              return <img key={index} src={galleryObject.imgUrl} alt="dog"></img>
+
+            })}
+
+          </section>
+
+        }
 
       </main>
 
