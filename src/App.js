@@ -1,7 +1,8 @@
 import { useState } from "react";
 import useAllDogs from "./hooks/useAllDogs";
-import SelectedDog from "./components/SelectedDog";
 import Gallery from "./components/Gallery";
+import SelectedBreedsView from "./components/SelectedBreedsView";
+import FilteredDogsView from "./components/FilteredDogsView";
 
 function App() {
   const allDogs = useAllDogs();
@@ -18,9 +19,6 @@ function App() {
 
   }
 
-  const deleteSelectedItem = (nameOfDog) => {
-    setSelectedBreeds(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()));
-  }
 
 
   return (
@@ -41,7 +39,7 @@ function App() {
           <div className="flex items-center gap-3 border p-2 my-2 rounded-lg w-full border-black">
 
             {/* SVG graphic obtained from svgrepo.com */}
-           <img src="/images/search-svgrepo-com.svg" width="20px" height="20px" alt="search-icon"/>
+            <img src="/images/search-svgrepo-com.svg" width="20px" height="20px" alt="search-icon" />
 
 
             <input type="search" aria-haspopup="listbox" aria-autocomplete="list" id="search-bar" onChange={(e) => {
@@ -57,24 +55,7 @@ function App() {
           </div>
 
 
-          {filteredBreeds.length > 0 &&
-
-
-            <article role="listbox" aria-expanded="true" id="search-results" className="border border-black p-4 rounded-lg w-full h-64 overflow-scroll">
-
-              <ul>
-                {
-                  filteredBreeds.map((dog, index) => {
-                    return <li key={index}><button onClick={() => {
-                      if (!selectedBreeds.includes(dog.charAt(0).toUpperCase() + dog.slice(1)))
-                        setSelectedBreeds([...selectedBreeds, dog.charAt(0).toUpperCase() + dog.slice(1)])
-
-                    }}>{dog.charAt(0).toUpperCase() + dog.slice(1)}</button></li>
-                  })}
-              </ul>
-            </article>
-
-          }
+          <FilteredDogsView data={filteredBreeds} modifySelectedBreeds={setSelectedBreeds} />
 
           <article id="search-limiter">
             <label htmlFor="limiter">Limit to
@@ -89,22 +70,8 @@ function App() {
           </article>
 
 
+          <SelectedBreedsView data={selectedBreeds} modifySelectedBreeds={setSelectedBreeds} />
 
-          {selectedBreeds.length > 0 &&
-
-            <article id="selected-items" >
-              <h5>Click submit to generate a gallery of these dogs!</h5>
-              <div className="border p-3 rounded-lg border-black">
-                <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-                  {selectedBreeds.map((selectedDog, index) => {
-                    return <SelectedDog deleteSelectedItem={deleteSelectedItem} key={index} name={selectedDog} />
-                  })}
-                </ul>
-
-              </div>
-
-            </article>
-          }
 
           <button onClick={handleSubmit} className="text-white mx-auto block my-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
 
@@ -112,7 +79,6 @@ function App() {
           <Gallery dogs={dogsToView} amountOfPictures={amountOfPictures} />
 
         </section>
-
 
 
       </main>
