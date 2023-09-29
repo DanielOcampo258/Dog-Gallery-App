@@ -4,7 +4,7 @@ import SelectedDog from './SelectedDog'
 const SelectedBreedsView = ({ data, modifySelectedBreeds }) => {
 
     const deleteSelectedItem = (nameOfDog) => {
-        modifySelectedBreeds((prev) => prev.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()));
+        modifySelectedBreeds((prev) => prev.filter((dog) => dog.searchAbleName.toLowerCase() !== nameOfDog.toLowerCase()));
     }
 
 
@@ -16,7 +16,7 @@ const SelectedBreedsView = ({ data, modifySelectedBreeds }) => {
                     <div className="border p-3 rounded-lg border-black">
                         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
                             {data.map((selectedDog, index) => {
-                                return <SelectedDog deleteSelectedItem={deleteSelectedItem} key={index} name={selectedDog} />
+                                return <SelectedDog deleteSelectedItem={deleteSelectedItem} key={index} name={selectedDog.searchAbleName} />
                             })}
                         </ul>
 

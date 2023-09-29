@@ -12,13 +12,13 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
 
             try {
-                const response = await fetch(`https://dog.ceo/api/breed/${dog.toLowerCase()}/images/random/${amountOfPictures}`);
+                const response = await fetch(`https://dog.ceo/api/breed/${dog.apiPath}/images/random/${amountOfPictures}`);
                 if (response.ok) {
 
                     const data = await response.json();
 
                     await setGallery((prev) => {
-                        return [...prev, { "name": dog, "imgUrl": data.message }]
+                        return [...prev, { "name": dog.searchAbleName, "imgUrl": data.message }]
                     })
 
                 }

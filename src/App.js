@@ -6,7 +6,7 @@ import FilteredDogsView from "./components/FilteredDogsView";
 import SearchBar from "./components/SearchBar";
 
 function App() {
-  const allDogs = useAllDogs();
+  const {allDogs, hasError} = useAllDogs();
   const [filteredBreeds, setFilteredBreeds] = useState([])
   const [selectedBreeds, setSelectedBreeds] = useState([])
   const [dogsToView, setViewableDogs] = useState([])
@@ -14,12 +14,11 @@ function App() {
 
 
 
-  const handleSubmit = (e) => {
+  const displayGallery = (e) => {
     e.preventDefault();
     setViewableDogs(selectedBreeds);
 
   }
-
 
 
   return (
@@ -36,10 +35,9 @@ function App() {
 
         <section id="user-search" className="w-3/4 flex flex-col gap-2 ">
 
-          <SearchBar data={allDogs} setFilterData={setFilteredBreeds}/>
+          <SearchBar data={allDogs} setFilterData={setFilteredBreeds} />
 
-      
-          <FilteredDogsView data={filteredBreeds} modifySelectedBreeds={setSelectedBreeds} />
+          <FilteredDogsView data={filteredBreeds} modifySelectedBreeds={setSelectedBreeds} selectedBreeds={selectedBreeds}/>
 
           <article id="search-limiter">
             <label htmlFor="limiter">Limit to
@@ -53,16 +51,18 @@ function App() {
 
           </article>
 
-
-          <SelectedBreedsView data={selectedBreeds} modifySelectedBreeds={setSelectedBreeds} />
-
-
-          <button onClick={handleSubmit} className="text-white mx-auto block my-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
-
-
-          <Gallery dogs={dogsToView} amountOfPictures={amountOfPictures} />
-
         </section>
+
+
+        <SelectedBreedsView data={selectedBreeds} modifySelectedBreeds={setSelectedBreeds} />
+
+
+        <button onClick={displayGallery} className="text-white mx-auto block my-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
+
+
+        <Gallery dogs={dogsToView} amountOfPictures={amountOfPictures} />
+
+
 
 
       </main>

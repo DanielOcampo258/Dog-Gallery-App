@@ -14,7 +14,7 @@ const SearchBar = ({ data, setFilterData }) => {
                     e.target.value !== '' ?
                         setFilterData(data.filter((dog) => {
 
-                            return dog.includes(e.target.value.toLowerCase())
+                            return dog.searchAbleName.includes(e.target.value.toLowerCase())
                         })) :
                         setFilterData([])
                 }} className="w-full h-full overflow-scroll" placeholder="Chow"></input>
