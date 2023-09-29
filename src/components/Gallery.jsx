@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 const Gallery = ({ dogs, amountOfPictures }) => {
 
     const [gallery, setGallery] = useState([])
-    const [builtSuccesfully, setBuildStatus] = useState(true);
+    const [builtSuccesfully, setBuildStatus] = useState(null);
 
     useEffect(() => {
+        
 
         const makeApiDogCalls = async (dog) => {
 
@@ -33,14 +34,17 @@ const Gallery = ({ dogs, amountOfPictures }) => {
             dogs.forEach((dog) => makeApiDogCalls(dog))
         }
 
+        if(builtSuccesfully === null)
+            setBuildStatus(true);
 
 
 
-    }, [dogs, amountOfPictures])
+
+    }, [dogs, amountOfPictures, builtSuccesfully])
 
     return (
         <>
-            {gallery.length > 0 &&
+            {(builtSuccesfully && gallery.length > 0) &&
                 <section id="gallery" className="text-center font-medium">
                     <h6>Welcome to your gallery!</h6>
 
@@ -49,7 +53,7 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
                             return (amountOfPictures === 1
                                 ? <img key={index} className="object-cover rounded-lg w-48 h-48" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
-                                : galleryObject.imgUrl.map((images) => <img className="object-cover rounded-lg w-48 h-48" key={index} src={images} alt={galleryObject.name}></img>)
+                                : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover rounded-lg w-48 h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
                             )
                         })}
 

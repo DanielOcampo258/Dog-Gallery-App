@@ -12,21 +12,14 @@ function App() {
 
 
 
-
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setViewableDogs(selectedBreeds);
 
-
   }
 
   const deleteSelectedItem = (nameOfDog) => {
-
     setSelectedBreeds(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()));
-
-    setViewableDogs(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()));
   }
 
 
@@ -48,12 +41,10 @@ function App() {
           <div className="flex items-center gap-3 border p-2 my-2 rounded-lg w-full border-black">
 
             {/* SVG graphic obtained from svgrepo.com */}
-            <svg className="" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+           <img src="/images/search-svgrepo-com.svg" width="20px" height="20px" alt="search-icon"/>
 
 
-            <input type="search" aria-autocomplete="list" id="search-bar" onChange={(e) => {
+            <input type="search" aria-haspopup="listbox" aria-autocomplete="list" id="search-bar" onChange={(e) => {
               e.target.value !== '' ?
                 setFilteredBreeds(allDogs.filter((dog) => {
 
