@@ -1,55 +1,32 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAllDogs from "./hooks/useAllDogs";
 import SelectedDog from "./components/SelectedDog";
+import Gallery from "./components/Gallery";
 
 function App() {
-  const allDogs = useAllDogs()
+  const allDogs = useAllDogs();
   const [filteredBreeds, setFilteredBreeds] = useState([])
   const [selectedBreeds, setSelectedBreeds] = useState([])
-  const [gallery, setGallery] = useState([])
+  const [dogsToView, setViewableDogs] = useState([])
   const [amountOfPictures, setAmountOfPictures] = useState(1);
 
-  useEffect(() => console.log(gallery), [gallery]);
-
-  useEffect(() => console.log(selectedBreeds), [selectedBreeds]);
 
 
-  /**
-   * @todo adjust text so that the sub breeds are converted to data to pass to API
-   * @param {} dog 
-   */
-  const makeApiDogCall = async (dog) => {
-
-    try {
-      const response = await fetch(`https://dog.ceo/api/breed/${dog.toLowerCase()}/images/random/${amountOfPictures}`);
-      if (response.ok) {
-        const data = await response.json();
 
 
-        setGallery((prev) => {
-          return [...prev, { "name": dog, "imgUrl": data.message }]
-        })
-
-      }
-
-    } catch (err) {
-
-    }
-
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    selectedBreeds.forEach((dog) => makeApiDogCall(dog));
+    setViewableDogs(selectedBreeds);
 
 
   }
 
   const deleteSelectedItem = (nameOfDog) => {
 
-    setSelectedBreeds(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()))
-    setGallery(gallery.filter((galleryObject) => galleryObject.name.toLowerCase() !== nameOfDog.toLowerCase()))
+    setSelectedBreeds(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()));
+
+    setViewableDogs(selectedBreeds.filter((dogName) => dogName.toLowerCase() !== nameOfDog.toLowerCase()));
   }
 
 
@@ -65,7 +42,7 @@ function App() {
 
       <main className="py-12 flex flex-col items-center w-full">
 
-        <section id="user-search" className="w-3/4 ">
+        <section id="user-search" className="w-3/4 flex flex-col gap-2 ">
 
           <label htmlFor="search-bar" className="block text-lg my-3">Search for the dog breed(s) you are looking for!</label>
           <div className="flex items-center gap-3 border p-2 my-2 rounded-lg w-full border-black">
@@ -140,27 +117,12 @@ function App() {
 
           <button onClick={handleSubmit} className="text-white mx-auto block my-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
 
+
+          <Gallery dogs={dogsToView} amountOfPictures={amountOfPictures} />
+
         </section>
 
 
-        {gallery.length > 0 &&
-
-          <section id="gallery" className="text-center font-medium">
-            <h6>Welcome to your gallery!</h6>
-
-            <div className="mx-auto items-center justify-items-center w-full h-auto grid gap-8 grid-cols-2 md:grid-cols-3">
-              {gallery.map((galleryObject, index) => {
-
-                return (amountOfPictures === 1
-                  ? <img className="object-cover rounded-lg w-48 h-48" key={index} src={galleryObject.imgUrl} alt={galleryObject.name}></img>
-                  : galleryObject.imgUrl.map((images) => <img className="object-cover rounded-lg w-48 h-48" key={index} src={images} alt={galleryObject.name}></img>)
-                )
-              })}
-
-            </div>
-          </section>
-
-        }
 
       </main>
 
