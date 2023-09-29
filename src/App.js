@@ -7,21 +7,29 @@ function App() {
   const [filteredBreeds, setFilteredBreeds] = useState([])
   const [selectedBreeds, setSelectedBreeds] = useState([])
   const [gallery, setGallery] = useState([])
+  const [amountOfPictures, setAmountOfPictures] = useState(1);
 
   useEffect(() => console.log(gallery), [gallery]);
 
   useEffect(() => console.log(selectedBreeds), [selectedBreeds]);
 
 
+  /**
+   * @todo adjust text so that the sub breeds are converted to data to pass to API
+   * @param {} dog 
+   */
   const makeApiDogCall = async (dog) => {
 
     try {
-      const response = await fetch(`https://dog.ceo/api/breed/${dog.toLowerCase()}/images/random`);
+      const response = await fetch(`https://dog.ceo/api/breed/${dog.toLowerCase()}/images/random/${amountOfPictures}`);
       if (response.ok) {
         const data = await response.json();
+
+
         setGallery((prev) => {
           return [...prev, { "name": dog, "imgUrl": data.message }]
         })
+
       }
 
     } catch (err) {
@@ -76,7 +84,10 @@ function App() {
                 })) :
                 setFilteredBreeds([])
             }} className="w-full h-full overflow-scroll" placeholder="Chow"></input>
+
+
           </div>
+
 
           {filteredBreeds.length > 0 &&
 
@@ -96,6 +107,19 @@ function App() {
             </article>
 
           }
+
+          <article id="search-limiter">
+            <label htmlFor="limiter">Limit to
+              <select value={amountOfPictures} onChange={(e) => setAmountOfPictures(e.target.value)} id="limiter">
+                <option>1</option>
+                <option>5</option>
+                <option>10</option>
+                <option>15</option>
+                <option>20</option>
+              </select> picture(s) per dog</label>
+
+          </article>
+
 
 
           {selectedBreeds.length > 0 &&
@@ -121,13 +145,19 @@ function App() {
 
         {gallery.length > 0 &&
 
-          <section id="gallery" className="mx-auto items-center justify-items-center w-3/4 h-auto grid gap-y-3 grid-cols-3">
-            {gallery.map((galleryObject, index) => {
+          <section id="gallery" className="text-center font-medium">
+            <h6>Welcome to your gallery!</h6>
 
-              return <img className="object-cover rounded-lg w-48 h-48" key={index} src={galleryObject.imgUrl} alt={galleryObject.name}></img>
+            <div className="mx-auto items-center justify-items-center w-full h-auto grid gap-8 grid-cols-2 md:grid-cols-3">
+              {gallery.map((galleryObject, index) => {
 
-            })}
+                return (amountOfPictures === 1
+                  ? <img className="object-cover rounded-lg w-48 h-48" key={index} src={galleryObject.imgUrl} alt={galleryObject.name}></img>
+                  : galleryObject.imgUrl.map((images) => <img className="object-cover rounded-lg w-48 h-48" key={index} src={images} alt={galleryObject.name}></img>)
+                )
+              })}
 
+            </div>
           </section>
 
         }
