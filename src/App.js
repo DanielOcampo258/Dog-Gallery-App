@@ -3,6 +3,7 @@ import useAllDogs from "./hooks/useAllDogs";
 import Gallery from "./components/Gallery";
 import SelectedBreedsView from "./components/SelectedBreedsView";
 import FilteredDogsView from "./components/FilteredDogsView";
+import SearchBar from "./components/SearchBar";
 
 function App() {
   const allDogs = useAllDogs();
@@ -35,26 +36,9 @@ function App() {
 
         <section id="user-search" className="w-3/4 flex flex-col gap-2 ">
 
-          <label htmlFor="search-bar" className="block text-lg my-3">Search for the dog breed(s) you are looking for!</label>
-          <div className="flex items-center gap-3 border p-2 my-2 rounded-lg w-full border-black">
+          <SearchBar data={allDogs} setFilterData={setFilteredBreeds}/>
 
-            {/* SVG graphic obtained from svgrepo.com */}
-            <img src="/images/search-svgrepo-com.svg" width="20px" height="20px" alt="search-icon" />
-
-
-            <input type="search" aria-haspopup="listbox" aria-autocomplete="list" id="search-bar" onChange={(e) => {
-              e.target.value !== '' ?
-                setFilteredBreeds(allDogs.filter((dog) => {
-
-                  return dog.includes(e.target.value.toLowerCase())
-                })) :
-                setFilteredBreeds([])
-            }} className="w-full h-full overflow-scroll" placeholder="Chow"></input>
-
-
-          </div>
-
-
+      
           <FilteredDogsView data={filteredBreeds} modifySelectedBreeds={setSelectedBreeds} />
 
           <article id="search-limiter">
