@@ -13,3 +13,42 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.spinner-container{
+  border-radius: 50px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 75px;
+  background-color: black;
+  height: 75px;
+}
+
+
+.loading-spinner{
+  border-radius: 50px;
+  background-color: white;
+  width: 80%;
+  height: 80%;
+
+  animation: spinner 2s linear infinite;
+}
+
+.loading-spinner::after{
+  content: "";
+  width: 15px;
+  height: 15px;
+  background: #fff;
+  top: 0;
+  transform: rotate(45deg);
+  position: absolute;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

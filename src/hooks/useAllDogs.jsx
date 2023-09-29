@@ -7,8 +7,13 @@ const useAllDogs = () => {
 
     useEffect(() => {
 
-        const capilizeName = (name) =>{
-            return name.charAt(0).toUpperCase() + name.slice(1);
+        const controller = new AbortController();
+        const signal = controller.signal
+
+        const capilizeName = (names) => {
+            return names.split(" ").reduce((accum, name) => {
+                return accum + " " + name.charAt(0).toUpperCase() + name.slice(1);
+            }, "").trim()
         }
 
         const formatApiData = (rawData) => {
@@ -34,14 +39,18 @@ const useAllDogs = () => {
                     "apiPath": dogBreed + "/" + subBreed
                 }])
             }, [])
-    
+
         }
-    
+
 
         const getAllDogs = async () => {
+
             try {
+
                 const response = await fetch(GET_ALL_BREEDS_URL, {
-                    method: 'GET'
+                    method: 'GET',
+                    signal
+
                 });
 
                 const data = await response.json()
@@ -49,7 +58,7 @@ const useAllDogs = () => {
                 const allBreedsRawData = data.message
 
                 setAllDogs(formatApiData(allBreedsRawData));
-        
+
                 setErrorStatus(false)
 
 
@@ -58,15 +67,19 @@ const useAllDogs = () => {
             }
 
         }
-
         getAllDogs();
+
+
+        return () => {
+            controller.abort()
+        };
     }, [])
 
 
 
-   
-    
-    
+
+
+
 
 
     return { allDogs, hasError };

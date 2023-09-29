@@ -1,12 +1,35 @@
 import React, { useEffect, useState } from 'react'
+import LoadingSpinner from './LoadingSpinner';
+import ErrorComponent from './ErrorComponent';
 
 const Gallery = ({ dogs, amountOfPictures }) => {
 
-    const [gallery, setGallery] = useState([])
-    const [builtSuccesfully, setBuildStatus] = useState(null);
+    const [gallery, setGallery] = useState([]);
+    const [hasError, setErrorStatus] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        
+        return () => {
+            console.log('b')
+        }
+    },[])
+
+    useEffect(() => {
+        if (gallery.length > 0)
+            setLoading(false)
+
+
+    }, [gallery])
+
+
+
+
+
+    useEffect(() => console.log(hasError), [hasError])
+
+
+    useEffect(() => {
+
 
         const makeApiDogCalls = async (dog) => {
 
@@ -17,51 +40,62 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
                     const data = await response.json();
 
-                    await setGallery((prev) => {
+                    setGallery((prev) => {
                         return [...prev, { "name": dog.searchAbleName, "imgUrl": data.message }]
                     })
 
                 }
 
             } catch (err) {
-                setBuildStatus(false);
+                setErrorStatus(true);
             }
 
         }
 
-        setGallery([])
+
+
         if (dogs.length > 0) {
+            setLoading(true)
             dogs.forEach((dog) => makeApiDogCalls(dog))
+            if (hasError === null) {
+                setErrorStatus(false);
+            }
+
         }
 
-        if(builtSuccesfully === null)
-            setBuildStatus(true);
 
+    }, [dogs, amountOfPictures, hasError])
 
-
-
-    }, [dogs, amountOfPictures, builtSuccesfully])
+    if (hasError) return <ErrorComponent />
 
     return (
         <>
-            {(builtSuccesfully && gallery.length > 0) &&
-                <section id="gallery" className="text-center font-medium">
-                    <h6>Welcome to your gallery!</h6>
 
-                    <div className="mx-auto items-center justify-items-center w-full h-auto grid gap-8 grid-cols-2 md:grid-cols-3">
-                        {gallery.map((galleryObject, index) => {
+            <>
+                {isLoading
+                    ? <LoadingSpinner />
+                    : <section id="gallery" className="text-center font-medium">
+                        <h6>Welcome to your gallery!</h6>
 
-                            return (amountOfPictures === 1
-                                ? <img key={index} className="object-cover rounded-lg w-48 h-48" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
-                                : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover rounded-lg w-48 h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
-                            )
-                        })}
+                        <div className="mx-auto items-center justify-items-center w-full h-auto grid gap-8 grid-cols-2 md:grid-cols-3">
+                            {gallery.map((galleryObject, index) => {
 
-                    </div>
-                </section>
-            }
+                                return (amountOfPictures === 1
+                                    ? <img key={index} className="object-cover rounded-lg w-48 h-48" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
+                                    : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover rounded-lg w-48 h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
+                                )
+                            })}
+
+                        </div>
+                    </section>
+
+
+                }
+
+            </>
+
+
         </>
-
 
     )
 }

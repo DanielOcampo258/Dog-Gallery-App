@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAllDogs from "./hooks/useAllDogs";
 import Gallery from "./components/Gallery";
 import SelectedBreedsView from "./components/SelectedBreedsView";
@@ -6,17 +6,23 @@ import FilteredDogsView from "./components/FilteredDogsView";
 import SearchBar from "./components/SearchBar";
 
 function App() {
-  const {allDogs, hasError} = useAllDogs();
+  const { allDogs, hasError } = useAllDogs();
   const [filteredBreeds, setFilteredBreeds] = useState([])
   const [selectedBreeds, setSelectedBreeds] = useState([])
   const [dogsToView, setViewableDogs] = useState([])
   const [amountOfPictures, setAmountOfPictures] = useState(1);
+  const [displayGallery, setGalleryDisplay] = useState(false)
+
+  useEffect(() => console.log(allDogs), [allDogs])
 
 
 
-  const displayGallery = (e) => {
+  const createGallery = (e) => {
     e.preventDefault();
+
     setViewableDogs(selectedBreeds);
+    console.log(selectedBreeds)
+
 
   }
 
@@ -37,7 +43,7 @@ function App() {
 
           <SearchBar data={allDogs} setFilterData={setFilteredBreeds} />
 
-          <FilteredDogsView data={filteredBreeds} modifySelectedBreeds={setSelectedBreeds} selectedBreeds={selectedBreeds}/>
+          <FilteredDogsView data={filteredBreeds} modifySelectedBreeds={setSelectedBreeds} selectedBreeds={selectedBreeds} />
 
           <article id="search-limiter">
             <label htmlFor="limiter">Limit to
@@ -57,10 +63,15 @@ function App() {
         <SelectedBreedsView data={selectedBreeds} modifySelectedBreeds={setSelectedBreeds} />
 
 
-        <button onClick={displayGallery} className="text-white mx-auto block my-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
+        <button onClick={createGallery} className="text-white mx-auto block my-4 md:text-lg bg-black px-6 py-4 rounded-lg" type="submit">Submit</button>
+
+        {displayGallery &&
+          <Gallery dogs={dogsToView} amountOfPictures={amountOfPictures} />
+        }
 
 
-        <Gallery dogs={dogsToView} amountOfPictures={amountOfPictures} />
+
+
 
 
 
