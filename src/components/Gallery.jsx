@@ -6,29 +6,16 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
     const [gallery, setGallery] = useState([]);
     const [hasError, setErrorStatus] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
 
 
     useEffect(() => {
-        if (gallery.length > 0)
-            setLoading(false)
-
+       if(gallery.length > 0)
+        setLoading(false)
+       else
+        setLoading(true)
 
     }, [gallery])
-
-    useEffect(() => {
-        console.log(isLoading)
-
-
-    }, [isLoading])
-
-
-
-
-
-
-
-    useEffect(() => console.log(hasError), [hasError])
 
 
     useEffect(() => {
@@ -41,16 +28,12 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
 
             try {
-                const response = await fetch(`https://og.ceo/api/breed/${dog.apiPath}/images/random/${amountOfPictures}`, { signal });
-                if (response.ok) {
+                return (fetch(`https://dog.ceo/api/breed/${dog.apiPath}/images/random/${amountOfPictures}`, { signal })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        return { "name": dog.searchAbleName, "imgUrl": data.message }
 
-                    const data = await response.json();
-
-                    setGallery((prev) => {
-                        return [...prev, { "name": dog.searchAbleName, "imgUrl": data.message }]
-                    })
-
-                }
+                    }));
 
             } catch (err) {
                 if (err.name !== 'AbortError') {
@@ -60,31 +43,29 @@ const Gallery = ({ dogs, amountOfPictures }) => {
                 }
             }
 
-
         }
-
-
         if (dogs.length > 0) {
-            setLoading(true)
+            setLoading(true);
+            const apiCalls = dogs.map((dog) => makeApiDogCalls(dog));
 
-            dogs.forEach((dog) => {
+            Promise.all((apiCalls))
+                .then((results) => {
+                    setLoading(false);
+                    setGallery(results)
+                    setErrorStatus(false)
+                })
+                .catch((err) => {
+                    setErrorStatus(true)
+                })
 
-                if (!hasError)
-                    makeApiDogCalls(dog)
-                else 
-                    setLoading(false)
-
-            })
-
-            if (hasError === null) {
-                setErrorStatus(false);
-            }
-
+        } else {
+            setLoading(false)
+            setGallery([])
         }
 
         return () => {
             controller.abort()
-            setGallery([])
+         
 
         }
 

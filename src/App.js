@@ -14,11 +14,11 @@ function App() {
   const [dogsToView, setViewableDogs] = useState([])
   const [amountOfPictures, setAmountOfPictures] = useState(1);
 
-  useEffect(() => console.log(filteredBreeds), [filteredBreeds])
 
   const createGallery = (e) => {
     e.preventDefault();
     setViewableDogs(selectedBreeds);
+  
 
   }
 
