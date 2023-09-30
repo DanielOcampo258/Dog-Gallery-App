@@ -63,7 +63,8 @@ const useAllDogs = () => {
 
 
             } catch (err) {
-                setErrorStatus(true)
+                if (err.name !== 'AbortError')
+                    setErrorStatus(true)
             }
 
         }
@@ -74,12 +75,6 @@ const useAllDogs = () => {
             controller.abort()
         };
     }, [])
-
-
-
-
-
-
 
 
     return { allDogs, hasError };

@@ -3,8 +3,8 @@ import React from 'react'
 const SearchBar = ({ data, setFilterData }) => {
     return (
         <>
-            <label htmlFor="search-bar" className="block text-lg my-3">Search for the dog breed(s) you are looking for!</label>
-            <div className="flex items-center gap-3 border p-2 my-2 rounded-lg w-full border-black">
+            <label htmlFor="search-bar" className="block text-lg font-bold my-3">Search for the dog breed(s) you are looking for!</label>
+            <div className="flex bg-white items-center gap-3 border p-2 my-2 rounded-lg w-full max-w-xl border-black">
 
                 {/* SVG graphic obtained from svgrepo.com */}
                 <img src="/images/search-svgrepo-com.svg" width="20px" height="20px" alt="search-icon" />
@@ -14,10 +14,10 @@ const SearchBar = ({ data, setFilterData }) => {
                     e.target.value !== '' ?
                         setFilterData(data.filter((dog) => {
 
-                            return dog.searchAbleName.includes(e.target.value.toLowerCase())
+                            return dog.searchAbleName.toLowerCase().includes(e.target.value.toLowerCase())
                         })) :
                         setFilterData([])
-                }} className="w-full h-full overflow-scroll" placeholder="Chow"></input>
+                }} className="w-full h-full" placeholder="Chow"></input>
 
 
             </div>

@@ -81,7 +81,7 @@ const Gallery = ({ dogs, amountOfPictures }) => {
                 <>
                     {isLoading
                         ? <LoadingSpinner />
-                        : <section id="gallery" className="text-center font-medium">
+                        : <section id="gallery" className="text-center h-screen mx-auto items-center justify-center font-medium w-10/12">
                             {hasError
 
                                 ? <ErrorComponent text={'Oops, looks like we got an error trying to build your gallery'} />
@@ -89,12 +89,12 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
                             }
 
-                            <div className={`mx-auto  items-center justify-items-center w-full h-auto grid gap-8 ${( gallery[0].imgUrl.length === 1 ? 'grid-cols-1' : 'grid-cols-2 md:grid-cols-3')}`}>
+                            <div className={`mx-auto items-center justify-items-center w-full h-auto grid gap-5 ${(gallery.length === 1 && gallery[0].imgUrl.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')}`}>
                                 {gallery.map((galleryObject, index) => {
 
                                     return (amountOfPictures === 1
-                                        ? <img key={index} className="object-cover rounded-lg w-48 h-48" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
-                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover rounded-lg w-48 h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
+                                        ? <img key={index} className="object-cover rounded-lg h-48 w-96" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
+                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover  max-w-48 rounded-lg w-full h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
                                     )
                                 })}
 
