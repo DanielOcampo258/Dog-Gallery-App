@@ -3,7 +3,7 @@ import React from 'react'
 const FilteredDogsView = ({ data: dataToBeFiltered, modifySelectedBreeds, selectedBreeds }) => {
 
     const addDog = (dog) => {
-        if (!selectedBreeds.includes(dog))
+        if (!selectedBreeds.includes(dog)) //prevents user from selecting duplicates
             modifySelectedBreeds((prevSeletedItems) => [...prevSeletedItems, dog])
 
     }

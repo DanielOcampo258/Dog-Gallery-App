@@ -11,13 +11,27 @@ const SearchBar = ({ data, setFilterData }) => {
 
 
                 <input type="search" aria-haspopup="listbox" aria-autocomplete="list" id="search-bar" onChange={(e) => {
-                    e.target.value !== '' ?
-                        setFilterData(data.filter((dog) => {
+                    e.target.value !== ''
+                        ? setFilterData(data.filter((dog) => {
 
                             return dog.searchAbleName.toLowerCase().includes(e.target.value.toLowerCase())
-                        })) :
-                        setFilterData([])
+                        }))
+                        : setFilterData([]) //if userfield is empty, we do not want to filter data
                 }} className="w-full h-full" placeholder="Chow"></input>
+
+                {/* Toggles to show all data or non based of prev assingment of filtered data */}
+                <button onClick={() => {
+                    setFilterData((prev) => {
+                        if (prev.length === 0)
+                            return data
+                        else
+                            return []
+                    })
+                }}>
+                    {/* SVG graphic obtained from svgrepo.com */}
+                    <img src='/images/caret-down-svgrepo-com.svg' width={'30px'} height={'30px'} />
+
+                </button>
 
 
             </div>

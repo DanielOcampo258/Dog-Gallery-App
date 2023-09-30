@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import LoadingSpinner from './LoadingSpinner';
 import ErrorComponent from './ErrorComponent';
 
-const Gallery = ({ dogs, amountOfPictures }) => {
+const Gallery = ({ dogs, amountOfPictures: amountOfPicturesLimit }) => {
 
     const [gallery, setGallery] = useState([]);
     const [hasError, setErrorStatus] = useState(null);
@@ -10,10 +10,10 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
 
     useEffect(() => {
-       if(gallery.length > 0)
-        setLoading(false)
-       else
-        setLoading(true)
+        if (gallery.length > 0)
+            setLoading(false)
+        else
+            setLoading(true)
 
     }, [gallery])
 
@@ -28,7 +28,7 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
 
             try {
-                return (fetch(`https://dog.ceo/api/breed/${dog.apiPath}/images/random/${amountOfPictures}`, { signal })
+                return (fetch(`https://dog.ceo/api/breed/${dog.apiPath}/images/random/${amountOfPicturesLimit}`, { signal })
                     .then((res) => res.json())
                     .then((data) => {
                         return { "name": dog.searchAbleName, "imgUrl": data.message }
@@ -44,21 +44,22 @@ const Gallery = ({ dogs, amountOfPictures }) => {
             }
 
         }
-        
+
         if (dogs.length > 0) {
             setLoading(true);
             const apiCalls = dogs.map((dog) => makeApiDogCalls(dog));
 
             Promise.all((apiCalls))
                 .then((results) => {
-                    setLoading(false);
                     setGallery(results)
                     setErrorStatus(false)
                 })
                 .catch((err) => {
                     setErrorStatus(true)
                 })
-
+                .finally(() => {
+                    setLoading(false)
+                })
         } else {
             setLoading(false)
             setGallery([])
@@ -69,7 +70,7 @@ const Gallery = ({ dogs, amountOfPictures }) => {
         }
 
 
-    }, [dogs, amountOfPictures, hasError])
+    }, [dogs, amountOfPicturesLimit, hasError])
 
     return (
         <>
@@ -87,10 +88,9 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
                             <div className={`mx-auto items-center justify-items-center w-full h-auto grid gap-5 ${(gallery.length === 1 && gallery[0].imgUrl.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')}`}>
                                 {gallery.map((galleryObject, index) => {
-
-                                    return (amountOfPictures === 1
-                                        ? <img key={index} className="object-contain rounded-lg h-48 w-96" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
-                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-contain  max-w-48 rounded-lg w-full h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
+                                    return (amountOfPicturesLimit === 1
+                                        ? <img key={index} className="object-cover rounded-lg h-96 w-96" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
+                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover  max-w-48 rounded-lg w-full h-96" key={innerIndex} src={images} alt={galleryObject.name}></img>)
                                     )
                                 })}
 

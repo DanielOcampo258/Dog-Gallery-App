@@ -8,7 +8,6 @@ const SelectedDog = ({ name, deleteSelectedItem }) => {
                 <button onClick={() => deleteSelectedItem(name)} className='flex hover:bg-gray-400 hover:rounded-lg items-center'>
                     {/* SVG OBTAINED FROM svgrepo.com */}
                     <img width="15px" height="15px" src='/images/close-sm-svgrepo-com.svg' alt='close icon' />
-
                 </button>
             </span>
         </li>
