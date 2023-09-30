@@ -16,7 +16,13 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
     }, [gallery])
 
-    
+    useEffect(() => {
+        console.log(isLoading)
+
+
+    }, [isLoading])
+
+
 
 
 
@@ -35,7 +41,7 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
 
             try {
-                const response = await fetch(`https://dog.ceo/api/breed/${dog.apiPath}/images/random/${amountOfPictures}`, { signal });
+                const response = await fetch(`https://og.ceo/api/breed/${dog.apiPath}/images/random/${amountOfPictures}`, { signal });
                 if (response.ok) {
 
                     const data = await response.json();
@@ -49,7 +55,6 @@ const Gallery = ({ dogs, amountOfPictures }) => {
             } catch (err) {
                 if (err.name !== 'AbortError') {
                     setErrorStatus(true);
-                    setLoading(false)
                     setGallery([])
 
                 }
@@ -59,10 +64,18 @@ const Gallery = ({ dogs, amountOfPictures }) => {
         }
 
 
-
         if (dogs.length > 0) {
             setLoading(true)
-            dogs.forEach((dog) => makeApiDogCalls(dog))
+
+            dogs.forEach((dog) => {
+
+                if (!hasError)
+                    makeApiDogCalls(dog)
+                else 
+                    setLoading(false)
+
+            })
+
             if (hasError === null) {
                 setErrorStatus(false);
             }
@@ -72,6 +85,7 @@ const Gallery = ({ dogs, amountOfPictures }) => {
         return () => {
             controller.abort()
             setGallery([])
+
         }
 
 
