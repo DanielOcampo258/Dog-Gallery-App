@@ -21,7 +21,7 @@ function App() {
     //notice we create a shallow copy of the selectedBreeds, this allows for user to keep generating 
     //galleries everytime they click submit
     setViewableDogs([...selectedBreeds]);
-
+   
   }
 
   return (

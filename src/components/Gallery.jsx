@@ -60,6 +60,10 @@ const Gallery = ({ dogs, amountOfPictures: amountOfPicturesLimit }) => {
                 .finally(() => {
                     setLoading(false)
                 })
+
+            const galleryView = document.getElementById('gallery')
+            if (galleryView)
+                galleryView.scrollIntoView({ behavior: 'smooth' })
         } else {
             setLoading(false)
             setGallery([])
@@ -89,8 +93,8 @@ const Gallery = ({ dogs, amountOfPictures: amountOfPicturesLimit }) => {
                             <div className={`mx-auto items-center justify-items-center w-full h-auto grid gap-5 ${(gallery.length === 1 && gallery[0].imgUrl.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')}`}>
                                 {gallery.map((galleryObject, index) => {
                                     return (amountOfPicturesLimit === 1
-                                        ? <img key={index} className="object-cover rounded-lg h-96 w-96" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
-                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover  max-w-48 rounded-lg w-full h-96" key={innerIndex} src={images} alt={galleryObject.name}></img>)
+                                        ? <img key={index} className="object-cover rounded-lg h-72 w-72 md:h-96 md:w-96" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
+                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover h-72 w-72 md:h-96 md:w-96 rounded-lg" key={innerIndex} src={images} alt={galleryObject.name}></img>)
                                     )
                                 })}
 

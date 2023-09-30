@@ -29,7 +29,7 @@ const SearchBar = ({ data, setFilterData }) => {
                     })
                 }}>
                     {/* SVG graphic obtained from svgrepo.com */}
-                    <img src='/images/caret-down-svgrepo-com.svg' width={'30px'} height={'30px'} />
+                    <img src='/images/caret-down-svgrepo-com.svg' alt='Caret Down Symbol to indicate expandable menu' width={'30px'} height={'30px'} />
 
                 </button>
 
