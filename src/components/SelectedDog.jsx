@@ -2,7 +2,7 @@ import React from 'react'
 
 const SelectedDog = ({ name, deleteSelectedItem }) => {
     return (
-        <li className='border bg-gray-300 flex px-2 justify-between items-center'>
+        <li className='border bg-gray-300 flex px-2 w-auto justify-between items-center'>
             {name}
             <span>
                 <button onClick={() => deleteSelectedItem(name)} className='flex hover:bg-gray-400 hover:rounded-lg items-center'>

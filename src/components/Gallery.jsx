@@ -16,6 +16,8 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
     }, [gallery])
 
+    
+
 
 
 
@@ -47,6 +49,8 @@ const Gallery = ({ dogs, amountOfPictures }) => {
             } catch (err) {
                 if (err.name !== 'AbortError') {
                     setErrorStatus(true);
+                    setLoading(false)
+                    setGallery([])
 
                 }
             }
@@ -75,11 +79,11 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
     return (
         <>
-            {gallery.length > 0 &&
+            {(gallery.length > 0 || hasError) &&
                 <>
                     {isLoading
                         ? <LoadingSpinner />
-                        : <section id="gallery" className="text-center h-screen mx-auto items-center justify-center font-medium w-10/12">
+                        : <section id="gallery" className="text-center h-screen mx-auto mt-8 items-center justify-center font-medium w-10/12">
                             {hasError
 
                                 ? <ErrorComponent text={'Oops, looks like we got an error trying to build your gallery'} />
