@@ -18,3 +18,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+#### Note
+
+You might get this error 
+
+```
+'react-scripts' is not recognized as an internal or external command,
+operable program or batch file.
+```
+
+If so, run `npm install` as the dependent packages are there, they just need to be installed.
+
