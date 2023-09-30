@@ -13,8 +13,6 @@ const Gallery = ({ dogs, amountOfPictures }) => {
         if (gallery.length > 0)
             setLoading(false)
 
-        console.log(gallery.length)
-
 
     }, [gallery])
 
@@ -93,8 +91,8 @@ const Gallery = ({ dogs, amountOfPictures }) => {
                                 {gallery.map((galleryObject, index) => {
 
                                     return (amountOfPictures === 1
-                                        ? <img key={index} className="object-cover rounded-lg h-48 w-96" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
-                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-cover  max-w-48 rounded-lg w-full h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
+                                        ? <img key={index} className="object-contain rounded-lg h-48 w-96" src={galleryObject.imgUrl} alt={galleryObject.name}></img>
+                                        : galleryObject.imgUrl.map((images, innerIndex) => <img className="object-contain  max-w-48 rounded-lg w-full h-48" key={innerIndex} src={images} alt={galleryObject.name}></img>)
                                     )
                                 })}
 

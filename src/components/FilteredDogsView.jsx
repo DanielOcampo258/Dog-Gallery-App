@@ -11,7 +11,7 @@ const FilteredDogsView = ({ data: dataToBeFiltered, modifySelectedBreeds, select
     return (
         <>
             {dataToBeFiltered.length > 0 &&
-                <article role="listbox" aria-expanded="true" id="search-results" className="border border-black p-4 rounded-lg w-full h-64 overflow-scroll" >
+                <article role="listbox" aria-expanded="true" id="search-results" className="border bg-white border-black p-4 rounded-lg w-full h-64 overflow-scroll" >
 
                     <ul>
                         {

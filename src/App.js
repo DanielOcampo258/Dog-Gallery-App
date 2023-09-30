@@ -24,7 +24,7 @@ function App() {
 
   return (
     <>
-      <div className="flex w-full bg-[#EFEFEF]">
+      <div className="block md:flex w-full bg-[#EFEFEF]">
         <div id="banner-container" className="w-full h-full">
 
 
@@ -36,6 +36,7 @@ function App() {
             <h3 className="text-center w-2/3 text-lg md:text-xl font-medium">A web app that lets you select your favorite dog breeds and view pictures of them.</h3>
 
           </header>
+          <img src="/images/banner.png" alt={'line art of corgi'} className="block md:hidden mx-auto max-w-xs object-contain"></img>
           <main className="py-12 flex flex-col items-center w-full">
 
             {hasError
@@ -70,12 +71,11 @@ function App() {
 
                 </section>
 
-
               </>
             }
           </main>
         </div>
-        <img src="/images/banner.png"  alt={'line art of corgi'} className="w-1/2 max-w-lg object-contain"></img>
+        <img src="/images/banner.png" alt={'line art of corgi'} className="hidden md:block w-1/2 max-w-lg object-contain"></img>
       </div>
 
       <Gallery dogs={dogsToView} amountOfPictures={amountOfPictures} />
