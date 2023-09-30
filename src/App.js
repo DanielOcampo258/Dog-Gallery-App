@@ -17,7 +17,7 @@ function App() {
 
   const createGallery = (e) => {
     e.preventDefault();
-    setViewableDogs(selectedBreeds);
+    setViewableDogs([...selectedBreeds]);
   
 
   }

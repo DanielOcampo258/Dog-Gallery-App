@@ -44,6 +44,7 @@ const Gallery = ({ dogs, amountOfPictures }) => {
             }
 
         }
+        
         if (dogs.length > 0) {
             setLoading(true);
             const apiCalls = dogs.map((dog) => makeApiDogCalls(dog));
@@ -65,8 +66,6 @@ const Gallery = ({ dogs, amountOfPictures }) => {
 
         return () => {
             controller.abort()
-         
-
         }
 
 
